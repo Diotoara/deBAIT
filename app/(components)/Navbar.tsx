@@ -21,11 +21,11 @@ export default function NavBar (){
     },
  
     {
-      title: "Products",
+      title: "Chat",
       icon: (
         <IconTerminal2 className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "/hello",
+      href: "/chat",
     },
     {
       title: "Components",

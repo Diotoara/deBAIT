@@ -22,33 +22,30 @@
 //      GROQ API
 import Groq from "groq-sdk";
 import { NextRequest, NextResponse } from "next/server";
+import { ChatCompletionMessageParam } from "groq-sdk/resources/chat/completions";
 
-// Initialize the client with your API key
 const groq = new Groq({
   apiKey: process.env.API_KEY
 });
 
 export async function POST(req:NextRequest) {
-    const {message} = await req.json();
+    const {history = []} = await req.json();
+
+    const messages : ChatCompletionMessageParam[] = history
+
   try {
     const chatCompletion = await groq.chat.completions.create({
-      messages: [
-        {
-          role: "user",
-          content: message,
-        },
-      ],
+      messages: messages,
       model: "llama-3.3-70b-versatile",
     });
     return NextResponse.json({
-        respone : chatCompletion.choices[0]?.message?.content || "no response",
+        response : chatCompletion.choices[0]?.message?.content || "no response",
     },{
         status:202
     })
   } catch (error) {
     return NextResponse.json({
         response : "Error fetching from Groq:", error,
-        Key : process.env.GROK_API_KEY
     },{
         status:404
     })
