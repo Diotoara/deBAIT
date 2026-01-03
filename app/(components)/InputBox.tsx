@@ -20,7 +20,7 @@ export function InputBox({w=140} : {w:number}) {
     console.log("submitted");
   };
   return (
-    <div className={`h-20 w-${w} flex flex-col justify-center  items-center px-4`}>
+    <div className={`h-20 w-160 flex flex-col justify-center  items-center px-4`}>
       <PlaceholdersAndVanishInput
         placeholders={placeholders}
         onChange={handleChange}

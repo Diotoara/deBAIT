@@ -2,6 +2,7 @@
 import { FloatingDock } from "@/components/ui/floating-dock";
 import {
   IconBrandGithub,
+  IconBrandLinkedin,
   IconBrandX,
   IconExchange,
   IconHome,
@@ -16,7 +17,7 @@ export default function NavBar (){
       icon: (
         <IconHome className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "#",
+      href: "/",
     },
  
     {
@@ -24,7 +25,7 @@ export default function NavBar (){
       icon: (
         <IconTerminal2 className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "#",
+      href: "/hello",
     },
     {
       title: "Components",
@@ -33,18 +34,7 @@ export default function NavBar (){
       ),
       href: "#",
     },
-    {
-      title: "Aceternity UI",
-      icon: (
-        <img
-          src="https://assets.aceternity.com/logo-dark.png"
-          width={20}
-          height={20}
-          alt="Aceternity Logo"
-        />
-      ),
-      href: "#",
-    },
+
     {
       title: "Changelog",
       icon: (
@@ -54,18 +44,20 @@ export default function NavBar (){
     },
  
     {
-      title: "Twitter",
+      title: "LinkedIn",
       icon: (
-        <IconBrandX className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+        <IconBrandLinkedin className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "#",
+      href: "https://www.linkedin.com/in/aryan-jha-530719325/",
+      target : "_blank"
     },
     {
       title: "GitHub",
       icon: (
         <IconBrandGithub className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "#",
+      href: "https://github.com/Diotoara/deBAIT",
+      target : "_blank"
     },
   ];
   return (

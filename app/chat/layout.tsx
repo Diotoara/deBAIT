@@ -5,7 +5,7 @@
     export default function ChatLayout({children,}: {children: React.ReactNode;}) {
     return (
         <div className="relative h-screen w-screen overflow-hidden opacity-100 bg-black">
-            <div className="absolute inset-0 z-0 opacity-75 ">
+            <div className="absolute inset-0 z-0 opacity-65 ">
             <DottedGlowBackground className="pointer-events-none mask-radial-to-100% mask-radial-at-center "
             opacity={1}
             gap={10}
