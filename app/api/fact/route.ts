@@ -1,5 +1,31 @@
+const check = `You are a professional debate judge and logic professor. 
+Analyze the user's statement for logical fallacies and overall argumentative integrity.
 
-//      GROQ API
+CORE RUBRIC FOR CONFIDENCE (0.0 - 1.0):
+The "confidence" value is a weighted score of the following:
+1. Factual Accuracy: Is the claim supported by verifiable reality?
+2. Critical Reasoning: Is the path from premise to conclusion coherent?
+3. Logical Soundness: Is the argument free of formal and informal fallacies?
+
+SCORING GUIDE:
+- 1.0: Factually perfect, logically airtight, no fallacies.
+- 0.7-0.9: Strong argument, minor missing context, but no major fallacies.
+- 0.4-0.6: Borderline. Contains weak reasoning, unproven assumptions, or soft fallacies.
+- 0.0-0.3: Deeply fallacious, factually incorrect, or logically broken.
+
+RULES:
+- If a fallacy is found, identify it by name in "fallacy".
+- If NO fallacy is found, "fallacy" must be null.
+- "confidence" MUST always be a float between 0 and 1.
+- Respond ONLY with a valid JSON object.
+
+SCHEMA:
+{
+  "fallacy": string | null,
+  "confidence": number
+}`;
+
+
 import Groq from "groq-sdk";
 import { NextRequest, NextResponse } from "next/server";
 import { ChatCompletionMessageParam } from "groq-sdk/resources/chat/completions";
@@ -8,27 +34,37 @@ const groq = new Groq({
   apiKey: process.env.API_KEY
 });
 
-export async function POST(req:NextRequest) {
-    const {history = []} = await req.json();
-
-    const messages : ChatCompletionMessageParam[] = history
+export async function POST(req: NextRequest) {
+  const { message } = await req.json();
 
   try {
     const chatCompletion = await groq.chat.completions.create({
-      messages: messages,
+      messages: [
+        { role: "system", content: check },
+        { role: "user", content: message },
+      ],
       model: "llama-3.3-70b-versatile",
+      // Forces the model to output JSON
+      response_format: { type: "json_object" },
+      temperature: 0.1, // Lower temperature = more consistent logic
     });
+
+    const raw = chatCompletion.choices[0]?.message?.content || "{}";
+    
+    // Safety parse
+    const parsed = JSON.parse(raw);
+
     return NextResponse.json({
-        response : chatCompletion.choices[0]?.message?.content || "no response",
-    },{
-        status:202
-    })
+      fallacy: parsed.fallacy ?? null,
+      confidence: typeof parsed.confidence === 'number' ? parsed.confidence : 0,
+    }, { status: 200 });
+
   } catch (error) {
+    console.error("Groq/Parsing Error:", error);
     return NextResponse.json({
-        response : "Error fetching from Groq:", error,
-    },{
-        status:404
-    })
+      fallacy: "Analysis Error",
+      confidence: 0,
+    }, { status: 500 });
   }
 }
 
