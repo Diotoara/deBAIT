@@ -5,7 +5,7 @@ type MessageType = {
 
 import { useEffect, useRef } from "react";
 
-export default function ChatComponent({messages, factCheckRes} : {messages:MessageType[], factCheckRes:any}) {
+export default function ChatComponent({messages, factCheckRes, isLoad} : {messages:MessageType[], factCheckRes:any, isLoad:boolean}) {
   const bottomRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     bottomRef.current?.scrollIntoView({
@@ -61,7 +61,28 @@ export default function ChatComponent({messages, factCheckRes} : {messages:Messa
               </div>
             </div>
           );
-        })}
+          })}
+
+          {isLoad && (
+            <div className="flex w-full justify-start animate-pulse">
+              {/* 1. Use the same max-w as your real messages (80%) */}
+              <div className="max-w-[80%] w-full px-5 py-4 rounded-2xl bg-neutral-800/50 border border-white/5 rounded-tl-none">
+                
+                {/* 2. Remove the fixed w-64 and use w-full */}
+                <div className="flex flex-col gap-3 w-full">
+                  {/* Top line - long */}
+                  <div className="h-3 bg-white/20 rounded-full w-[95%]"></div>
+                  
+                  {/* Middle lines - varied but wide */}
+                  <div className="h-3 bg-white/20 rounded-full w-full"></div>
+                  <div className="h-3 bg-white/20 rounded-full w-[92%]"></div>
+                  
+                  {/* Bottom line - short finish */}
+                  <div className="h-3 bg-white/20 rounded-full w-[40%]"></div>
+                </div>
+              </div>
+            </div>
+          )}
       <div ref={bottomRef} />
     </div>
   );

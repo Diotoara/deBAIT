@@ -1,6 +1,7 @@
 "use client";
 
 import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
+import { NextResponse } from "next/server";
 import { useEffect, useState } from "react";
 
 type MessageType = {
@@ -10,7 +11,7 @@ type MessageType = {
   confidence?: string | null
 }
 
-export function InputBox({w=140, messages, setMessages, setFactCheckRes} : {w:number, messages : MessageType[], setMessages? : any, setFactCheckRes:any}) {
+export function InputBox({w=140, messages, setMessages, setFactCheckRes, setLoading} : {w:number, messages : MessageType[], setMessages? : any, setFactCheckRes:any, setLoading:any}) {
   useEffect(()=>{
      console.log(messages)
     },[messages])
@@ -26,13 +27,16 @@ export function InputBox({w=140, messages, setMessages, setFactCheckRes} : {w:nu
     
 
   const sendMessage = async () => {
+    if (!text.trim()) return;
+    setLoading(true)
     const messageIndex = messages.length;
     const userMessage = { role: "user", content: text };
     const updatedHistory = [...messages, userMessage];
     setMessages(updatedHistory);
     setText("");
 
-    const [response, factRes] = await Promise.all([
+    try {
+      const [response, factRes] = await Promise.all([
       fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -46,18 +50,25 @@ export function InputBox({w=140, messages, setMessages, setFactCheckRes} : {w:nu
         body: JSON.stringify({ message : text}),
       })
     ])
-
     const stat = await factRes.json();
     setFactCheckRes((prev:any) => ({
       ...prev,
       [messageIndex] : { fallacy: stat.fallacy, confidence: stat.confidence }
     }));
+    
     const data = await response.json();
-
     setMessages((prev:any) => [
       ...prev, 
       { role: "assistant", content: data.response }
     ]);
+    } catch (err:any) {
+      return NextResponse.json({
+        error: "error in API calling.", err
+      })
+    } finally{
+      setLoading(false)
+    }
+    
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
