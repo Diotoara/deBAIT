@@ -34,14 +34,6 @@ export default function NavBar (){
       ),
       href: "/chat/read",
     },
-
-    {
-      title: "Changelog",
-      icon: (
-        <IconExchange className="h-full w-full text-neutral-500 dark:text-neutral-300" />
-      ),
-      href: "#",
-    },
  
     {
       title: "LinkedIn",

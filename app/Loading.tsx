@@ -1,8 +1,11 @@
+//add responsivess
+//improve prompt
+
 export default function Loading() {
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#050505]">
       {/* Background Glow Effect */}
-      <div className="absolute w-[300px] h-[300px] bg-purple-600/20 blur-[120px] rounded-full animate-pulse" />
+      <div className="absolute w-75 h-75 bg-purple-600/20 blur-[120px] rounded-full animate-pulse" />
       
       <div className="relative flex flex-col items-center">
         {/* The Animated Ring */}
@@ -11,7 +14,7 @@ export default function Loading() {
           <div className="absolute inset-0 rounded-full border-2 border-purple-500/20 animate-ping" />
           
           {/* Rotating Gradient Border */}
-          <div className="absolute inset-0 rounded-full border-t-2 border-l-2 border-purple-500 animate-spin [animation-duration:1.5s]" />
+          <div className="absolute inset-0 rounded-full border-t-2 border-l-2 border-purple-500 animate-spin animation-duration-[1.5s]" />
           
           {/* Center Glow Dot */}
           <div className="absolute inset-0 m-auto w-3 h-3 bg-purple-400 rounded-full shadow-[0_0_15px_rgba(168,85,247,0.8)]" />
