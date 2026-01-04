@@ -43,31 +43,36 @@ const FloatingDockMobile = ({
         {open && (
           <motion.div
             layoutId="nav"
-            className="absolute inset-x-0 bottom-full mb-2 flex flex-col gap-2"
+            // Changed 'bottom-full mb-4' to 'top-full mt-4' 
+            // This forces the menu to open DOWNWARDS
+            className="absolute top-full mt-4 flex flex-row gap-3 left-1/2 -translate-x-1/2 items-center justify-center z-[999]"
           >
             {items.map((item, idx) => (
               <motion.div
                 key={item.title}
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, scale: 0.8, y: -10 }} // Animates from the button downwards
                 animate={{
                   opacity: 1,
+                  scale: 1,
                   y: 0,
                 }}
                 exit={{
                   opacity: 0,
-                  y: 10,
+                  scale: 0.8,
+                  y: -10,
                   transition: {
-                    delay: idx * 0.05,
+                    delay: idx * 0.02,
                   },
                 }}
-                transition={{ delay: (items.length - 1 - idx) * 0.05 }}
+                transition={{ delay: idx * 0.05 }}
               >
                 <a
                   href={item.href}
-                  key={item.title}
-                  className=" flex h-10 w-10 items-center justify-center rounded-full bg-gray-50 dark:bg-neutral-900"
+                  className="flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-xl dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800"
                 >
-                  <div className="h-4 w-4">{item.icon}</div>
+                  <div className="h-6 w-6 text-neutral-700 dark:text-neutral-300">
+                    {item.icon}
+                  </div>
                 </a>
               </motion.div>
             ))}
@@ -76,9 +81,14 @@ const FloatingDockMobile = ({
       </AnimatePresence>
       <button
         onClick={() => setOpen(!open)}
-        className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-50 dark:bg-neutral-800"
+        className="flex h-12 w-12 items-center justify-center rounded-full bg-white dark:bg-neutral-800 shadow-lg border border-neutral-200 dark:border-neutral-700"
       >
-        <IconLayoutNavbarCollapse className="h-5 w-5 text-neutral-500 dark:text-neutral-400" />
+        <IconLayoutNavbarCollapse 
+          className={cn(
+            "h-6 w-6 text-neutral-500 transition-transform duration-300",
+            open ? "rotate-180" : "rotate-0"
+          )} 
+        />
       </button>
     </div>
   );
