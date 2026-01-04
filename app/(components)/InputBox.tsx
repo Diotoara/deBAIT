@@ -8,7 +8,7 @@ type MessageType = {
   content : string
 }
 
-export function InputBox({w=140, messages, setMessages} : {w:number, messages : MessageType[], setMessages : any }) {
+export function InputBox({w=140, messages, setMessages} : {w:number, messages : MessageType[], setMessages? : any }) {
   useEffect(()=>{
      console.log(messages)
     },[messages])

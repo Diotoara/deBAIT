@@ -5,12 +5,13 @@ import { CrowdCanvas } from "./(components)/Crowd";
 import { InputBox } from "./(components)/InputBox";
 import NavBar from "./(components)/Navbar";
 import FaultyTerminal from "./(components)/Terminal";
+import { useState } from "react";
+import { HeroInput } from "./(components)/HeroInput";
 
 export default function Home() {
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-black">
 
-      {/* ================= BACKGROUND (BREATHING) ================= */}
       <motion.div
         className="absolute inset-0 z-0"
         initial={{ opacity: 0, scale: 1.05 }}
@@ -44,10 +45,9 @@ export default function Home() {
         />
       </motion.div>
 
-      {/* ================= FOREGROUND ================= */}
       <div className="relative z-10 h-screen pointer-events-none">
 
-        {/* ---------- NAV ---------- */}
+        {/* ---------- NAVbar ---------- */}
         <motion.div
           className="pointer-events-auto"
           initial={{ opacity: 0, y: -12 }}
@@ -57,7 +57,6 @@ export default function Home() {
           <NavBar />
         </motion.div>
 
-        {/* ---------- HERO TEXT (CLIP + BLUR REVEAL) ---------- */}
         <motion.div
           className="absolute flex justify-center pt-4 w-full text-center z-50"
           initial={{
@@ -93,7 +92,7 @@ export default function Home() {
               DEBATE WITH AI NOW
             </motion.p>
 
-            {/* INPUT – spring pop */}
+            {/* INPUT box*/}
             <motion.div
               className="pointer-events-auto mt-6"
               initial={{ scale: 0.85, opacity: 0 }}
@@ -105,12 +104,11 @@ export default function Home() {
                 damping: 14,
               }}
             >
-              <InputBox w={140} />
+              <HeroInput w={140} />
             </motion.div>
           </div>
         </motion.div>
 
-        {/* ---------- CROWD (DEPTH REVEAL) ---------- */}
         <motion.div
           className="absolute top-111/100 left-0 w-full"
           initial={{
