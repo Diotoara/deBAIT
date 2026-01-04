@@ -5,7 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import ChatComponent from "../(components)/ChatComponent";
 import { InputBox } from "../(components)/InputBox";
 
-
+import { motion, AnimatePresence } from "framer-motion";
 
 const prompt = `You are an expert debate opponent trained in formal logic and evidence-based reasoning.
 
@@ -100,16 +100,66 @@ export default function Chat() {
     }
   };
     
-    return(
-      <div className="h-full w-full flex flex-col overflow-hidden">
-         
-        <div id="chat-scroll-container" className="flex-1 overflow-y-auto px-4 py-8">
-            <ChatComponent messages={messages} factCheckRes={factCheckRes} isLoad={loading} />
-        </div>
+    return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="h-full w-full flex flex-col overflow-hidden bg-transparent"
+    >
+      {/* 1. Chat Scroll Area Animation */}
+      <motion.div 
+        id="chat-scroll-container" 
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="flex-1 overflow-y-auto px-4 py-8"
+      >
+        <ChatComponent 
+          messages={messages} 
+          factCheckRes={factCheckRes} 
+          isLoad={loading} 
+        />
+      </motion.div>
 
-        <div className="shrink-0 w-full flex justify-center pb-6 pt-4 bg-transparent">
-            <InputBox messages={messages} setMessages={setMessages} setFactCheckRes={setFactCheckRes} w={90} setLoading={setLoading} />
-        </div>
-    </div>
-    )
+      {/* 2. Input Box Animation (Slide up from bottom) */}
+      <motion.div 
+        initial={{ y: 100 }}
+        animate={{ y: 0 }}
+        transition={{ type: "keyframes", stiffness: 100, damping: 20, delay: 0.1 }}
+        className="shrink-0 w-full flex justify-center pb-6 pt-4 bg-transparent"
+      >
+        <InputBox 
+          messages={messages} 
+          setMessages={setMessages} 
+          setFactCheckRes={setFactCheckRes} 
+          w={90} 
+          setLoading={setLoading} 
+        />
+      </motion.div>
+    </motion.div>
+  );
 }
+
+
+// return(
+
+//       <div className="h-full w-full flex flex-col overflow-hidden">
+
+         
+
+//         <div id="chat-scroll-container" className="flex-1 overflow-y-auto px-4 py-8">
+
+//             <ChatComponent messages={messages} factCheckRes={factCheckRes} isLoad={loading} />
+
+//         </div>
+
+
+
+//         <div className="shrink-0 w-full flex justify-center pb-6 pt-4 bg-transparent">
+
+//             <InputBox messages={messages} setMessages={setMessages} setFactCheckRes={setFactCheckRes} w={90} setLoading={setLoading} />
+
+//         </div>
+
+//     </div>
+

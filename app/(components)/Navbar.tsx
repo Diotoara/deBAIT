@@ -28,11 +28,11 @@ export default function NavBar (){
       href: "/chat",
     },
     {
-      title: "Components",
+      title: "Read",
       icon: (
         <IconNewSection className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "#",
+      href: "/chat/read",
     },
 
     {
